@@ -1,14 +1,16 @@
-﻿using DairyApp;
+﻿using System.Net.Mime;
+using DairyApp;
 
-while (true)
+var textList = new List<TextLog>();
+bool access = UserManagment.LogScreen();
+while (access)
 {
     var inputSelection = MenuHelper.AskOption("GÜNLÜK UYGULAMASI",
-        ["Yeni Kayıt Ekle", "Kayıtları Listele", "Kayıtları Sil", "Çıkış"]);
+        ["Yeni Kayıt Ekle", "Kayıtları Listele", "Kayıt Bul", "Kayıtları Sil", "Çıkış"]);
     if (inputSelection == 1)
     {
         Console.Clear();
-        Console.Write("Sevgili günlük: ");
-        Text.SaveToTxt(Console.ReadLine());
+        HelperForTxt.SaveToTxt();
     }
 
     if (inputSelection == 2)
@@ -17,27 +19,20 @@ while (true)
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine("KAYITLAR");
         Console.ResetColor();
-        string readTxt = File.ReadAllText(@"DairyApp.txt");
-        Console.WriteLine(readTxt);
+        HelperForTxt.ListTxtRecords();
     }
 
     if (inputSelection == 3)
     {
-        Console.Clear();
-        Console.WriteLine("Bütün kayıtları silmek istiyorsunuz!");
-        Console.Write("Devam etmek istiyor musunuz?(E/H): ");
-        var inputChoise = Console.ReadKey(true);
-        if (inputChoise.Key == ConsoleKey.E)
-        {
-            Text.DeleteFromTxt();
-        }
-        else
-        {
-            continue;
-        }
+        HelperForTxt.DateLogList();
     }
 
     if (inputSelection == 4)
+    {
+        HelperForTxt.DeleteAllLog();
+    }
+    
+    if (inputSelection == 5)
     {
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Yellow;
